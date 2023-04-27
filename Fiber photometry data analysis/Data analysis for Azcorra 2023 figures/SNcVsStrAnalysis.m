@@ -1,4 +1,4 @@
-function p1_f4f1_SNcStr(data6,deconvolve)
+function SNcVsStrAnalysis(data6,deconvolve)
 
 %% defaults, check vars
 if ~exist('deconvolve','var') || deconvolve ~= 1

@@ -1,4 +1,4 @@
-function p2_f1_Run(data6,snc)
+function LocomotionAnalysis(data6,snc)
 % This script plots many different figures for the analysis of LOCOMOTION
 % SIGNALING of different DA subtypes as presented in Azcorra et al. 2023.
 % Each section is labelled to show which figure and panel it generates

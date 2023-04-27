@@ -1,4 +1,4 @@
-function p2_f2_Rew(data6,snc)
+function RewardPuffAnalysis(data6,snc)
 % This script plots many different figures for the analysis of REWARDS and
 % AIR PUFF SIGNALING of different DA subtypes as presented in Azcorra et 
 % al. 2023.
@@ -466,7 +466,7 @@ for ss = 1:3
         horizontalLine(0);
         % pvalue to compare amplitude of response for small vs large
         p = signrank(changeSmall,changeLarge)*6;
-        title(['m1 = ' num2str(mean(changeSmall,'omitnan')) ', m2 = ' num2str(mean(changeLarge,'omitnan')) ', p = ' num2str(p)])    
+        title(['m1 = ' num2str(mean(changeSmall,'omitnan')) ', m2 = ' num2str(mean(changeLarge,'omitnan')) ', p = ' num2str(p) ', n = ' num2str(length(changeSmall))])    
     end
 end
 
@@ -627,13 +627,21 @@ ylabel('Reward response (Int Norm \DeltaF/F)')
 % pvalues (paired) - plus bonferroni correction for V,C,A,D
 disp('p-vals small vs large rew (BONF-4): (V,C,A,D)')
 pval = nan(1,5);
+n = nan(1,5);
+m = nan(1,5); %mice
 for s = 1:5
     respSmall = response(good == s,4);
     respLarge = response(good == s,5);
     p = signrank(respSmall,respLarge);
     pval(s) = p *4; %bonferroni correction
+    n(s) = min(sum(~isnan(respLarge)),sum(~isnan(respSmall)));
+    goodTemp = find(good == s);
+    goodTemp(isnan(respLarge) |  isnan(respSmall)) = [];
+    m(s) = length(unique(data6.Mouse(goodTemp)));
 end
 disp(['    ' num2str(pval(1)) ', ' num2str(pval(2)) ', ' num2str(pval(4)) ', ' num2str(pval(5))])
+disp(['    n = ' num2str(n(1)) ', ' num2str(n(2)) ', ' num2str(n(4)) ', ' num2str(n(5))])
+disp(['    m = ' num2str(m(1)) ', ' num2str(m(2)) ', ' num2str(m(4)) ', ' num2str(m(5))])
 
 
 %% plot reward response vs locomotion cross-corr integral

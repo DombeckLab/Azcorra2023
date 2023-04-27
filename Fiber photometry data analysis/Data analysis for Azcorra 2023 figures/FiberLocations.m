@@ -596,6 +596,7 @@ pairsXYZ{6} = pairsXYZ_2;
 pairsPC{6} = pairsPC_2;
 
 pvalsVSmismatch = nan(4,length(bins)-1);
+n = nan(5,length(bins)-1);
 for b = 1:length(bins)-1
     idx2 = pairsXYZ{6} >= bins(b) & pairsXYZ{6} < bins(b+1); %mismatch subtypes
     for i = [1 2 4] % no Raldh, no DAT
@@ -603,7 +604,9 @@ for b = 1:length(bins)-1
         if sum(idx1) > 5
             pvalsVSmismatch(i,b) = ranksum(pairsPC{6}(idx2),pairsPC{i}(idx1));
         end
+        n(i,b) = sum(idx1);
     end
+    n(5,b) = sum(idx2);
 end
 pvalsVSmismatch = pvalsVSmismatch * sum(sum(~isnan(pvalsVSmismatch))); % BONF correction
 pvalsVSmismatch = round(pvalsVSmismatch,2,'significant');
