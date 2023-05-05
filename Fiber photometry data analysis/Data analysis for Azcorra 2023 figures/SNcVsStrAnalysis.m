@@ -10,9 +10,9 @@ end
 disp(['    Deconvolve? ' v5]);
 
 %% load data
-filePath = matlab.desktop.editor.getActiveFilename;
+filePath = mfilename('fullpath');
 i = strfind(filePath, '\');
-filePath = filePath(1:i(end));
+filePath = filePath(1:i(end-1));
 load([filePath 'MatlabFolders.mat'], 'dataProcessingFolder');
 
 

@@ -1,8 +1,8 @@
-function FiberLocations2(data6)
+function FiberLocations(data6)
 %% set DATA PROCESSING FOLDER (edit MatlabFolders.mat file in code folder)
-filePath = matlab.desktop.editor.getActiveFilename;
+filePath = mfilename('fullpath');
 i = strfind(filePath, '\');
-filePath = filePath(1:i(end));
+filePath = filePath(1:i(end-1));
 load([filePath 'MatlabFolders.mat'], 'dataProcessingFolder');
 
 %% set permanent variables

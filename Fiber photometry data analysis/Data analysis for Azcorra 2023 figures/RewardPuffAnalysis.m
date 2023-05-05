@@ -24,9 +24,9 @@ normHeat = 2; %2 = scale maintaining 0
 hz = 100;
 
 %% set DATA PROCESSING FOLDER (edit MatlabFolders.mat file in code folder)
-filePath = matlab.desktop.editor.getActiveFilename;
+filePath = mfilename('fullpath');
 i = strfind(filePath, '\');
-filePath = filePath(1:i(end));
+filePath = filePath(1:i(end-1));
 load([filePath 'MatlabFolders.mat'], 'dataProcessingFolder');
 
 %% Switch channels for recordings where str/snc is in chR, and duplicate 
@@ -1019,6 +1019,7 @@ title('AVE PUFF PER MOUSE')
 if snc == 0
     colorsRaw = [C.red{1}; C.orange{1}; C.aqua{1}]; %V,C,A
     bestMice = {'VGlut-B612-20200309-0003' 'Calb-2290-20220321-0004' 'Anxa-J075-20220310-0001'};
+    bestMiceRG = [1 2 2];
     xlims = [403 394 248;339 381 228]; %what part of each recording to show
     plotWin = 15; % in sec
     %set figure dimensions
@@ -1028,7 +1029,7 @@ if snc == 0
     bestIdx = nan(3,1);
     for s = 1:3
         id = findMouse(data6,bestMice{s});
-        bestIdx(s) =  id(1);
+        bestIdx(s) =  id(bestMiceRG(s),1);
     end
     % Plot - see function at bottom
     for s = 1:3
@@ -1044,6 +1045,7 @@ end
 if snc == 0
     colorsRaw = [C.red{1}; C.orange{1}; C.green{1}; C.green{1}];
     bestMice = {'VGlut-B612-20200309-0003' 'Calb-2290-20220321-0004' 'Raldh-1573-20201015-0002' 'Raldh-1846-20210623-0002'};
+    bestMiceRG = [1 2 1 2];
     xlims = [403 393 111 152];
     plotWin = 30; % in sec
     %set figure dimensions
@@ -1053,7 +1055,7 @@ if snc == 0
     bestIdx = nan(4,1);
     for s = 1:4
         id = findMouse(data6,bestMice{s});
-        bestIdx(s) =  id(1);
+        bestIdx(s) =  id(bestMiceRG(s),1);
     end
     % Plot raw traces - see function at bottom
     for s = 1:4

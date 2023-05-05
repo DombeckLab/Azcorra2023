@@ -23,9 +23,9 @@ normHeat = 2; %2 = scale maintaining 0
 hz = 100;
 
 %% set DATA PROCESSING FOLDER (edit MatlabFolders.mat file in code folder)
-filePath = matlab.desktop.editor.getActiveFilename;
+filePath = mfilename('fullpath');
 k = strfind(filePath, '\');
-filePath = filePath(1:k(end));
+filePath = filePath(1:k(end-1));
 load([filePath 'MatlabFolders.mat'], 'dataProcessingFolder');
 
 %% Switch channels for recordings where str/snc is in chR, and duplicate 
@@ -184,7 +184,7 @@ for s = 1:length(subtypes)
     verticalLine(0);
     
     % plot center of mass (COM)
-    COM = [mean(scores(good == s,iPC(1))),mean(scores(good == i,iPC(2)))];
+    COM = [mean(scores(good == s,iPC(1))),mean(scores(good == s,iPC(2)))];
     hold on
     scatter(COM(1),COM(2),200,'k','x')
 end
@@ -771,7 +771,7 @@ if snc == 0
         scaleNums = fliplr(upsample(fliplr(scales0(1:3)),2));
         
         % plot
-        subplot(3,1,i);
+        subplotMN(3,4,i,1:3);
         hold on
         plot(x(vals{1},100),vals{1},'Color',[0 0 0]);
         plot(x(vals{2},100),vals{2}+1,'Color',C.grey{1});
@@ -783,6 +783,28 @@ if snc == 0
         xlim([xlims(i) xlims(i)+plotWin])
         yticks(scaleTicks2)
         yticklabels(scaleNums)
+        
+        % get crosscorr
+        subplotMN(3,4,i,4);
+        hold on
+        g470 = data6.data{e}.chGreen{1};
+        g405 = data6.data{e}.chGreen405{1};
+        acc = data6.data{e}.Acceleration{1};
+        run = logical(full(data6.data{e}.Run{1}));
+        bad = isnan(g470) | isnan(g405) | isnan(acc);
+        acc(bad) = [];
+        g470(bad) = [];
+        g405(bad) = [];
+        run(bad) = [];
+        acc = acc(run);
+        g470 = g470(run);
+        g405 = g405(run);
+        cc470 = crosscorr(acc,g470,win);
+        cc405 = crosscorr(acc,g405,win);
+        plot((-win:win)/hz,cc405,'Color',C.lightBlue{1},'LineWidth',2);
+        plot((-win:win)/hz,cc470,'Color',colorsRaw(i,:),'LineWidth',2);
+        ylim([-0.3 0.3])
+        verticalLine(0);
     end
 end
 
